@@ -1,13 +1,17 @@
 ---
 layout: post
-title: Introducing Trunky
-tags: [Katex, Mermaid, Markdown]
-categories: [Demo]
+title: Trunky - Introduction
+feature-img: "assets/img/portfolio/trunky-01.jpg"
+excerpt: Trunky is an experimental desktop app built with Electron, React, and TypeScript to explore AI-powered chat and workspace workflows. It connects a local OpenAI-compatible host to provide chat completions and embeddings. The app organizes conversations, allows message editing, and stores workspace data in SQLite. It includes tools for semantic search, workspace inspection, and prompt orchestration. 
+tags: [AI, RAG, Chat, Experimental, Electron]
+categories: [AI Experiments]
 ---
 
 One of the easiest and most convenient ways of learning new technologies is by using them. Everything AI related is full of buzzwords: from RAG-Systems over Agentic Memory to Classification Heads and Embeddings - it is hard to get an overview and even harder to stay up to date. 
 
 So that's the reason I started this side project: to become more familiar with all that and learn, how to build modern, AI-oriented applications. And I would like to share my journey with you.
+
+<!-- more -->
 
 # Introducing Trunky
 
@@ -39,7 +43,7 @@ Today Trunky is:
 - a workspace-based knowledge assistant that enables the AI model to interact with workspace data through tools
 - a sandbox for trying ideas like semantic search, tool-enabled reasoning, and multi-model integration
 
-![Trunky chat view](<Screenshot 2026-04-07 at 00.22.16.png>)
+![Trunky chat view](<../../../../assets/img/posts/Screenshot 2026-04-07 at 00.22.16.png>)
 
 In the image above you can see Trunky's main screen. Like many other AI chat applications you have your chat history and input area in the midddle and some side panes to manage conversations and workspace information.
 
@@ -52,13 +56,13 @@ The main view of the application. Here you can chat with the LLM model and use i
 
 Trunky can automatically filter information from your conversation and stores them in the workspace. The software then uses this data as an additional source of information, like in the example below.
 
-![alt text](<./Screenshot 2026-04-10 at 21.32.40.png>)
+![Trunky chat meassage](<../../../../assets/img/posts/Screenshot 2026-04-10 at 21.32.40.png>)
 
 You can see that Trunky used the **searchSemanticInformation**-tool to gather information about an upcoming trip to Denmark, which Trunky was told about in another conversation and is not part of its current chat-history.
 
 In Trunky, you can always check, what information it has in its store using the **Workspace Inspector**.
 
-![alt text](<./Screenshot 2026-04-10 at 21.35.19.png>)
+<img style="height: 750px" src="../../../../assets/img/posts/Screenshot 2026-04-10 at 21.35.19.png">
 
 Here you can not only see what is currently inside of your workspace, you can manually change these items, out-date them or restore a version from the past.
 
@@ -92,7 +96,7 @@ graph LR
   CO[ChatOrchestrator]
   WM[WorkspaceManager]
   CC[ChatCompressor]
-  TR[ToolsRegistry]
+  TR[ToolRegistry]
   PB[PromptBuilder]
   ES[EmbeddingService]
   DB[Database]
@@ -167,7 +171,7 @@ graph LR
   CO[ChatOrchestrator]
   WM[WorkspaceManager]
   CC[ChatCompressor]
-  TR[ToolsRegistry]
+  TR[ToolRegistry]
   PB[PromptBuilder]
 
   CO --> | requests prompt | PB
