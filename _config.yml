@@ -3,10 +3,10 @@ baseurl: ""
 url: "https://u-schmidt.github.io"
 
 # THEME-SPECIFIC CONFIGURATION
-title: Udo's Website                                    # site's title
-description: "A website with blog posts and pages"      # used by search engines
-avatar: assets/img/me-04.png                            # Empty for no avatar in navbar
-favicon: assets/favicon.ico                             # Icon displayed in the tab
+title: Udo's Website                                                  # site's title
+description: "A website about personal projects, work and life"       # used by search engines
+avatar: assets/img/me-04.png                                          # Empty for no avatar in navbar
+favicon: assets/img/trunky02.png                                      # Icon displayed in the tab
 
 # Header and footer text
 header_text: Udo's blog about personal projects, work and life  # Change Blog header text
