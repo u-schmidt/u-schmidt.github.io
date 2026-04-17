@@ -17,7 +17,7 @@ Angaben gemäß §5 TMG:
   Zwanckweg 8
   22337 Hamburg
 
-  Tel.-Nr.: +49 40 88363975
+  Tel.-Nr.: +49 40 88363976
   E-Mail: udo-schmidt@gmx.net
 ```
 
@@ -28,6 +28,6 @@ Verantwortlich für den Inhalt nach §55 Absatz 2 RStV:
   Zwanckweg 8
   22337 Hamburg
 
-  Tel.-Nr.: +49 40 88363975
+  Tel.-Nr.: +49 40 88363976
   E-Mail: udo-schmidt@gmx.net
 ```
