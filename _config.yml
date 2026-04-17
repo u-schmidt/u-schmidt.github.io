@@ -11,7 +11,7 @@ favicon: assets/img/trunky02.png                                      # Icon dis
 # Header and footer text
 header_text: Udo's blog about personal projects, work and life  # Change Blog header text
 header_feature_image: assets/img/header/stgeorg-01.jpg
-header_feature_image_responsive: true
+header_feature_image_responsive: false
 footer_text: >
   Random staff about personal projects, work and life. <br>
 
