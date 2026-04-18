@@ -22,7 +22,7 @@ Before that, I worked over five years for DextraData, building mobile applicatio
 
 Prior to that, I worked for companies in different roles, such as Software Developer, Senior Software Engineer and Senior Consultant. 
 
-For further details, have a look to my profile at <a href="https://www.linkedin.com/in/udo-schmidt-30b732149">LinkedIn</a>. 
+For further details, have a look to my profile at <a href="https://www.linkedin.com/in/u-schmidt">LinkedIn</a>. 
 
 You can also reach out to me via e-mail: <a href="mailto:udo-schmidt@gmx.net">udo-schmidt@gmx.net</a>
 
