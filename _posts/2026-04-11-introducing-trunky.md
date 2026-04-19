@@ -4,7 +4,7 @@ title: Trunky - Introduction
 feature-img: "assets/img/portfolio/trunky-01.jpg"
 excerpt: Trunky is an experimental desktop app built with Electron, React, and TypeScript to explore AI-powered chat and workspace workflows. It connects a local OpenAI-compatible host to provide chat completions and embeddings. The app organizes conversations, allows message editing, and stores workspace data in SQLite. It includes tools for semantic search, workspace inspection, and prompt orchestration. 
 tags: [AI, RAG, Chat, Experimental, Electron]
-categories: [AI Experiments]
+categories: [AI-Experiments]
 ---
 
 One of the easiest and most convenient ways to learn new technologies is to use them. Everything AI-related is full of buzzwords: from RAG-Systems over Agentic Memory to Classification Heads and Embeddings - it is hard to get an overview and even harder to stay up to date. 
@@ -15,7 +15,7 @@ So that's why I started this side project: to become more familiar with all that
 
 # Introducing Trunky
 
-I want to introduce you to Trunky - a learning-first AI project built with Electron, React, and TypeScript. It is a playground for experimenting with large language models, tool orchestration, workspace memory, and prompt engineering.
+I want to introduce you to Trunky - a learning-first AI project built with Electron, React, and TypeScript. It is a playground for experimenting with large language models, tool orchestration, workspace memory, and prompt engineering. You can find the source code of Trunky at GitHub: https://github.com/u-schmidt/trunky.
 
 In this first article, I want to explain what Trunky is and how its architecture is shaped around AI technologies. I explain the key decisions I made and how they affect the project as it grows, the obstacles I ran into, and how to avoid them when starting an AI-centric app like Trunky again.
 
@@ -58,34 +58,60 @@ Trunky can automatically filter information from your conversation and store it 
 
 ![Trunky chat meassage](<../../../../assets/img/posts/Screenshot 2026-04-10 at 21.32.40.png>)
 
-You can see that Trunky used the **searchSemanticInformation**-tool to gather information about an upcoming trip to Denmark, which Trunky was told about in another conversation and is not part of its current chat history.
+You can see that Trunky used the **searchSemanticInformation**-tool to gather information about an upcoming trip to Denmark, which Trunky was told about in another conversation and is not part of its current chat history. 
 
-In Trunky, you can always check what information it has in its storage using the **Workspace Inspector**.
+In Trunky, you can always check what information it has in its workspace storage using the **Workspace Inspector**.
 
 <img style="height: 750px" src="../../../../assets/img/posts/Screenshot 2026-04-10 at 21.35.19.png">
 
 Here, you can not only see what is currently in your workspace, but also manually change, outdate, or restore a past version.
 
+I will tell more about tools and workspace integration togehter with chat orchestration in a follow up article. 
+
 **Workspace Page**
 The management page for all workspace-related stuff. Here you create and manage your workspaces. Each workspace is independent of the others. You can import knowledge before or while you are working with the AI model.
 
 **Tools Page**
-A simple page where you can decide which tools will be available for the AI model to use. Tools are used to let the AI model interact with the world beyond sending text messages back to the user. Common uses include database access or web searches, but it could be anything as long as the AI model understands its purpose and how to use the tool.
+A simple page where you can decide which tools will be available for the AI model to use. Tools are used to let the AI model interact with the world beyond sending text messages back to the user. Common use cases include database access or web searches, but it could be anything as long as the AI model understands its purpose and how to use the tool.
 
 It is not always desirable to give an AI model access to all tools simultaneously. Therefore, you can select a combination of tools within the tools page that best fits your specific use case.
 
 **Settings Page**
 Here you configure your application. You set up the basic connection to the model host system (such as Ollama or LM Studio), select the AI model(s) you want to use, and define some basic parameters and behaviors.  
 
-## Where To Find Trunky
+## Key Decisions For Development
 
-Link to GitHub project, TBD
+**Model Hosting**
+I decided not to focus on model infrastructure aspects by including model loading/management in the Trunky application. Instead, I wanted to focus on consuming AI services while still using a local model. Therefore, I chose LM Studio for hosting as it allowed me to easily switch between models and try different settings within an easy-to-use graphical UI.
 
----
+**Choosing a Model**
+When choosing a model, you have a wide variety of options. Which is best depends on many factors, but for my locally hosted model, the most important factor is:
+
+- memory requirements
+- the basic intelligence
+- special capabilities
+
+For my hardware (a MacBook M1 with 32 GB of RAM), a model with about 9B parameters seems to be the sweet spot: it provides enough intelligence for the tasks I have in mind while not consuming too much memory.
+Larger models may fit into my RAM, but I also had in mind that I want a second model for embeddings to run in parallel, so I did not want to push it to the limits.
+Keep in mind that a larger token window will also increase the model's RAM consumption. This comes in handy for development when you want to test AI interaction without chat compression, which can be very time-consuming and adds another layer of complexity while debugging.
+
+When it came to model capabilities, I tried different freely available models and chose the `Hermes3-llama3.1-8B` for development and testing. It is specifically trained for tool usage and instruction-following, which is necessary for Trunky's core features. And it already felt less *chatty* than other models trained for general user interaction. In later experiments, I also switched to `Qwen3.5-9B`, which feels different, less strict, and more creative even when using tools.
+
+**Technology Stack**
+When it comes to AI development, Python is the best choice for a programming language. Given the lack of good UI frameworks for Python (my opinion) and the fact that I would rather not host the model in my application, I decided against Python. I gave Electron, React, and TypeScript a try. That said, if you just start and want to try out something fast without building a whole application around, Python is still the way to go for most cases.
+
+**AI Tool Usage**
+For that *agentic feeling* I wanted to achieve, where the application develops and follows a task across multiple execution steps, tool usage by the AI model was a necessity. When the project first started, tool selection was considered highly dynamic and extensible. While this is still a goal, the focus has shifted away from that flexibility. At this point, Trunky comes with a set of six built-in tools that allow workspace interaction only, keeping it focused on its main purpose.
+
+**Semantic Search**
+This feature was not planned when Trunky started, as it introduces a whole new use case for AI into the project. Conventional search approaches did not yield the results I wanted or needed, so semantic search was introduced based on embeddings generated by the `text-embedding-bge-m3` embedding model. With its help, an embedding is created for every workspace entry as soon as it is stored and kept updated when the entry's content changes. The AI benefits from semantic search, allowing it to retrieve information without relying on exact-match terms.
+
+**Workspace Memory**
+Dividing knowledge entries into isolated workspaces instead of handling a global knowledge base not only makes tests much easier but also gives Trunky more flexibility and its use cases. Conversations are tied to a workspace and share their knowledge. That design enables me to determine which information is retrieved directly from chat history and which must be retrieved from the knowledge store without having to reset the application multiple times during testing. It also allows workspace-specific prompts, which can help control AI behavior without rebuilding the entire system prompt.
 
 ## So What Is Inside?
 
-Before we dive deeper into how an AI-centric application with an *agentic* feel could be built, I want to give you an overview of Trunky's architecture.
+Before we dive deeper into how an AI-centric application with an *agentic* feeling could be built, I want to give you an overview of Trunky's architecture.
 
 ## Architecture Overview
 
@@ -152,7 +178,7 @@ graph LR
 
 This component:
 
-- receives chat requests from the UI via IPC
+- receives chat requests from the UI via IPC (determined by the architecture of Electron)
 - loads conversation history from `conversationStore`
 - determines which model to use
 - builds prompt context
@@ -273,41 +299,13 @@ The UI is still an important part of Trunky.
   
 The frontend is best described as the runtime shell for the backend AI architecture. It makes the experiment accessible, while the real value is in the backend AI logic.
 
-## Key Decisions For Development
-
-**Model Hosting**
-I decided not to focus on model infrastructure aspects by including model loading/management in the Trunky application. Instead, I wanted to focus on consuming AI services while still using a local model. Therefore, I chose LM Studio for hosting as it allowed me to easily switch between models and try different settings within an easy-to-use graphical UI.
-
-**Choosing a Model**
-When choosing a model, you have a wide variety of options. Which is best depends on many factors, but for my locally hosted model, the most important factor is:
-
-- memory requirements
-- the basic intelligence
-- special capabilities
-
-For my hardware (a MacBook M1 with 32 GB of RAM), a model with about 9B parameters seems to be the sweet spot: it provides enough intelligence for the tasks I have in mind while not consuming too much memory.
-Larger models may fit into my RAM, but I also had in mind that I want a second model for embeddings to run in parallel, so I did not want to push it to the limits.
-Keep in mind that a larger token window will also increase the model's RAM consumption. This comes in handy for development when you want to test AI interaction without chat compression, which can be very time-consuming and adds another layer of complexity while debugging.
-
-When it came to model capabilities, I tried different freely available models and chose the `Hermes3-llama3.1-8B` for development and testing. It is specifically trained for tool usage and instruction-following, which is necessary for Trunky's core features. And it already felt less *chatty* than other models trained for general user interaction. In later experiments, I also switched to `Qwen3.5-9B`, which feels different, less strict, and more creative even when using tools.
-
-**Technology Stack**
-When it comes to AI development, Python is the best choice for a programming language. Given the lack of good UI frameworks for Python (my opinion) and the fact that I would rather not host the model in my application, I decided against Python. I gave Electron, React, and TypeScript a try. That said, if you just start and want to try out something fast without building a whole application around, Python is still the way to go for most cases.
-
-**AI Tool Usage**
-For that *agentic feeling* I wanted to achieve, where the application develops and follows a task across multiple execution steps, tool usage by the AI model was a necessity. When the project first started, tool selection was considered highly dynamic and extensible. While this is still a goal, the focus has shifted away from that flexibility. At this point, Trunky comes with a set of six built-in tools that allow workspace interaction only, keeping it focused on its main purpose.
-
-**Semantic Search**
-This feature was not on the list when Trunky started, as it introduces a whole new use case for AI into the project. Conventional search approaches did not yield the results I wanted or needed, so semantic search was introduced based on embeddings generated by the `text-embedding-bge-m3` embedding model. With its help, an embedding is created for every workspace entry as soon as it is stored and kept updated when the entry's content changes. The AI benefits from semantic search, allowing it to retrieve information without relying on exact-match terms.
-
-**Workspace Memory**
-Dividing knowledge entries into isolated workspaces instead of handling a global knowledge base not only makes tests much easier but also gives Trunky more flexibility and its use cases. Conversations are tied to a workspace and share their knowledge. That design enables me to determine which information is retrieved directly from chat history and which must be retrieved from the knowledge store without having to reset the application multiple times during testing. It also allows workspace-specific prompts, which can help control AI behavior without rebuilding the entire system prompt.
-
 ## Summary
 
 Trunky is a learning-first AI desktop project that explores how modern applications can combine local model experimentation, tool-enabled workflows, and workspace memory. This first article in this series described the motivation behind the project, the core architecture, and the key decisions that shaped the proof-of-concept implementation—from using model adapters and semantic search to choosing Electron, React, and TypeScript for the UI.
 
 The goal is a practical exploration of how an AI assistant can behave more like a knowledge-aware workspace companion than a plain chatbot. As Trunky evolves, it should become better at remembering relevant information, using tools intentionally, and retrieving structured knowledge from a shared workspace.
+
+You can find the source code of Trunky at GitHub: https://github.com/u-schmidt/trunky
 
 ## What’s Next
 
